@@ -1,0 +1,38 @@
+version: "3"
+services:
+  streaming-service-postgres:
+    container_name: streaming-service-postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret123
+      - POSTGRES_DB=uwu_streaming
+      - POSTGRES_INITDB_ARGS="--data-checksums"
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+      - streaming-service-data-master:/var/lib/postgresql/data
+    networks:
+      - syncrosa-networks
+  streaming-service-backend:
+    container_name: streaming-service-backend
+    build: .
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://streaming-service-postgres:5432/uwu_streaming
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=secret123
+    ports:
+      - 8080:8080
+    depends_on:
+      - streaming-service-postgres
+    networks:
+      - syncrosa-networks
+networks:
+  syncrosa-networks:
+    driver: bridge
+
+volumes:
+  streaming-service-data-master:
+  streaming-service-data-slaves:
+
