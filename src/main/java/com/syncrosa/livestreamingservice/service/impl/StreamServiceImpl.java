@@ -100,6 +100,18 @@ public class StreamServiceImpl implements IStreamService {
 
     @Override
     @Transactional
+    public Boolean endStreamRtmp(String token) {
+        Stream stream = streamRepository.findFirstByToken(token)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stream not found"));
+        stream.setIsStreamActive(false);
+
+        streamRepository.save(stream);
+
+        return true;
+    }
+
+    @Override
+    @Transactional
     public Boolean validateToken(String token) {
         Stream stream = streamRepository.findFirstByToken(token)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Token is wrong"));

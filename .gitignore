@@ -1,8 +1,6 @@
 HELP.md
-/target/*
-
-!/target/my-application-*-standalone.jar
-
+target/
+prod/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

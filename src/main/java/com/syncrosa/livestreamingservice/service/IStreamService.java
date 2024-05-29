@@ -16,6 +16,8 @@ public interface IStreamService {
 
     void endStream(String id);
 
+    Boolean endStreamRtmp(String token);
+
     Boolean validateToken(String token);
 
 }

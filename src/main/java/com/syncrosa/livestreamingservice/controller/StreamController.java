@@ -75,13 +75,27 @@ public class StreamController {
                         .build());
     }
 
+
     @PostMapping(
-            path = "/api/v1/lives/{streamId}",
+            path = "/api/v1/lives/callback",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    private ResponseEntity<Boolean> validateToken(@PathVariable("streamId") String streamId) {
+    private ResponseEntity<WebResponse<Boolean>> endStreamRtmp(@RequestParam("token") String token) {
 
-        Boolean validateTokenResponse = iStreamService.validateToken(streamId);
+        iStreamService.endStreamRtmp(token);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(WebResponse.<Boolean>builder()
+                        .data(true)
+                        .build());
+    }
+
+
+    @PostMapping(
+            path = "/api/v1/lives"
+    )
+    private ResponseEntity<Boolean> validateToken(@RequestParam("token") String token) {
+
+        Boolean validateTokenResponse = iStreamService.validateToken(token);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(validateTokenResponse);
 
